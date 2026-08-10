@@ -555,3 +555,4 @@ FodyWeavers.xsd
 
 .vscode/
 .idea/
+/src/generated/prisma
