@@ -556,3 +556,8 @@ FodyWeavers.xsd
 .vscode/
 .idea/
 /src/generated/prisma
+
+# Environment variables
+.env
+.env.*
+!.env.example
