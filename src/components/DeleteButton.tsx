@@ -8,8 +8,12 @@ type Props = {
 
 export default function DeleteButton({ id }: Props) {
   return (
-    <button onClick={() => deleteProduct(id)}>
-      Delete
-    </button>
+    <form action={deleteProduct}>
+      <input type="hidden" name="id" value={id} />
+
+      <button type="submit">
+        Delete
+      </button>
+    </form>
   );
 }

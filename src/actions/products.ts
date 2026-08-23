@@ -17,7 +17,9 @@ export async function createProduct(formData: FormData) {
   redirect("/products")
 }
 
-export async function deleteProduct(id: number) {
+export async function deleteProduct(formData: FormData) {
+  const id = Number(formData.get("id"));
+
   await prisma.product.delete({
     where: {
       id,
