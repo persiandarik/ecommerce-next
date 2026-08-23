@@ -28,3 +28,23 @@ export async function deleteProduct(formData: FormData) {
 
   redirect("/products");
 }
+
+export async function updateProduct(
+  id: number,
+  formData: FormData
+) {
+  const name = formData.get("name") as string;
+  const price = Number(formData.get("price"));
+
+  await prisma.product.update({
+    where: {
+      id,
+    },
+    data: {
+      name,
+      price,
+    },
+  });
+
+  redirect(`/products/${id}`);
+}
