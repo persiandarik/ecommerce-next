@@ -1,10 +1,22 @@
 import prisma from "@/lib/prisma";
-import { cacheTag } from "next/cache";
+// import { cacheTag } from "next/cache";
 
 export async function getProducts() {
-  "use cache";
+  // "use cache";
 
-  cacheTag("products");
+  // cacheTag("products");
 
   return prisma.product.findMany();
+}
+
+export async function getProduct(id: number) {
+  // "use cache";
+
+  // cacheTag(`product:${id}`);
+
+  return prisma.product.findUnique({
+    where: {
+      id,
+    },
+  });
 }
