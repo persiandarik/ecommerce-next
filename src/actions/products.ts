@@ -2,19 +2,35 @@
 
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { productSchema } from "@/lib/validations/product";
+import z from "zod";
 
-export async function createProduct(formData: FormData) {
-  const name = formData.get("name") as string;
-
+export async function createProduct( prevState: unknown, formData: FormData) {
+  const name = formData.get("name");
   const price = Number(formData.get("price"));
+
+  const result = productSchema.safeParse({
+    name,
+    price,
+  });
+
+ if (!result.success) {
+  const errors = z.treeifyError(result.error);
+  // console.log(errors.properties?.name?.errors); // ["Product name is required"]
+  // console.log(errors.properties?.price?.errors); // ["Product price is required"]
+  return {
+    errors,
+  };
+}
 
   await prisma.product.create({
     data: {
-      name,
-      price,
+      name: result.data.name,
+      price: result.data.price,
     },
   });
-  redirect("/products")
+
+  redirect("/products");
 }
 
 export async function deleteProduct(formData: FormData) {

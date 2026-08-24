@@ -1,23 +1,5 @@
-import { createProduct } from "@/actions/products";
+import CreateProductForm from "@/components/CreateProductForm";
 
-export default function CreateProductPage() {
-  return (
-    <form action={createProduct}>
-      <input
-        type="text"
-        name="name"
-        placeholder="Product name"
-      />
-
-      <input
-        type="number"
-        name="price"
-        placeholder="Price"
-      />
-
-      <button type="submit">
-        Create
-      </button>
-    </form>
-  );
+export default function CreateProductsPage() {
+  return <CreateProductForm />;
 }
