@@ -1,4 +1,5 @@
 import { getProduct } from "@/lib/products";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{
@@ -6,21 +7,19 @@ type Props = {
   }>;
 };
 
-export default async function IdProductPage({ params }: Props) {
+export default async function ProductIdPage({ params }: Props) {
   const { id } = await params;
 
   const product = await getProduct(Number(id));
 
   if (!product) {
-    return <h1>Product not found</h1>;
+    notFound();
   }
 
   return (
     <div>
       <h1>{product.name}</h1>
-
       <p>Price: ${product.price}</p>
-
       <p>ID: {product.id}</p>
     </div>
   );
