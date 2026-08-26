@@ -4,8 +4,9 @@ import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { productSchema } from "@/lib/validations/product";
 import z from "zod";
+import { updateTag } from "next/cache";
 
-export async function createProduct( prevState: unknown, formData: FormData) {
+export async function createProduct(prevState: unknown, formData: FormData) {
   const name = formData.get("name");
   const price = Number(formData.get("price"));
 
@@ -14,14 +15,14 @@ export async function createProduct( prevState: unknown, formData: FormData) {
     price,
   });
 
- if (!result.success) {
-  const errors = z.treeifyError(result.error);
-  // console.log(errors.properties?.name?.errors); // ["Product name is required"]
-  // console.log(errors.properties?.price?.errors); // ["Product price is required"]
-  return {
-    errors,
-  };
-}
+  if (!result.success) {
+    const errors = z.treeifyError(result.error);
+    // console.log(errors.properties?.name?.errors); // ["Product name is required"]
+    // console.log(errors.properties?.price?.errors); // ["Product price is required"]
+    return {
+      errors,
+    };
+  }
 
   await prisma.product.create({
     data: {
@@ -42,6 +43,9 @@ export async function deleteProduct(formData: FormData) {
     },
   });
 
+  updateTag(`product:${id}`);
+  updateTag("products");
+
   redirect("/products");
 }
 
@@ -61,6 +65,9 @@ export async function updateProduct(
       price,
     },
   });
+
+  updateTag(`product:${id}`);
+  updateTag(`products`);
 
   redirect(`/products/${id}`);
 }
