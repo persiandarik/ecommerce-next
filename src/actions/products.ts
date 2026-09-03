@@ -5,8 +5,11 @@ import { redirect } from "next/navigation";
 import { productSchema } from "@/lib/validations/product";
 import z from "zod";
 import { updateTag } from "next/cache";
+import { requireAdmin } from "@/lib/auth";
 
 export async function createProduct(prevState: unknown, formData: FormData) {
+  await requireAdmin();
+
   const name = formData.get("name");
   const price = Number(formData.get("price"));
 
@@ -35,6 +38,8 @@ export async function createProduct(prevState: unknown, formData: FormData) {
 }
 
 export async function deleteProduct(formData: FormData) {
+  await requireAdmin();
+
   const id = Number(formData.get("id"));
 
   await prisma.product.delete({
@@ -49,10 +54,9 @@ export async function deleteProduct(formData: FormData) {
   redirect("/products");
 }
 
-export async function updateProduct(
-  id: number,
-  formData: FormData
-) {
+export async function updateProduct(id: number, formData: FormData) {
+  await requireAdmin();
+
   const name = formData.get("name") as string;
   const price = Number(formData.get("price"));
 
