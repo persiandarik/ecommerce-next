@@ -8,9 +8,15 @@ export default async function AdminContent() {
     redirect("/login");
   }
 
+  if (session.user.role !== "ADMIN") {
+    redirect("/products");
+  }
+
   return (
     <div>
-      <p>Welcome {session.user?.name}</p>
+      <h1>Admin Products</h1>
+
+      <p>Welcome {session.user.name}</p>
     </div>
   );
 }
